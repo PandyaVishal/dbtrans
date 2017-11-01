@@ -158,7 +158,7 @@ func (dt *DT) QueryFetch(sqlstmt string, args ...interface{}) ([]Rows, error) {
 		return cf, nil
 
 	default:
-		err := errors.New("Invalid method call, use DBExecFetch")
+		err := errors.New("Invalid method call, use Exec")
 		log.Infod(err)
 		return nil, err
 
@@ -184,7 +184,7 @@ func (dt *DT) Exec(sqlstmt string, args ...interface{}) (int64, error) {
 	}
 	switch strings.Fields(sqlstmt)[0] {
 	case "SELECT", "SEL", "select", "sel":
-		err := errors.New("Invalid method call on Select, use DBQueryFetch")
+		err := errors.New("Invalid method call on Select, use QueryFetch")
 		log.Infod(err)
 		return 0, err
 	default:
