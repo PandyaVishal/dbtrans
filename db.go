@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	_ "github.com/mattn/go-sqlite3"
-	"nhproto/infra/log"
+	"vlog"
 	"strings"
 	"sync"
 )
