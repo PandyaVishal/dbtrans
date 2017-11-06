@@ -141,18 +141,18 @@ func (dt *DT) QueryFetch(sqlstmt string, args ...interface{}) ([]Rows, error) {
 				cf[m].Colvals = append(cf[m].Colvals, vals[m])
 			}
 		}
+		if err := rs.Err(); err != nil {
+			log.Infod("Error iterating the rows")
+			return nil, err
+		}
 		//close the result set and release to pool
 		if err := rs.Close(); err != nil {
 			log.Infod("Error closing the result set")
 			return nil, err
 		}
-		if err := rs.Err(); err != nil {
-			log.Infod("Error iterating the rows")
-			return nil, err
-		}
 		//Commit the transaction
 		if err := tx.Commit(); err != nil {
-			log.Infod("Error closing the result set")
+			log.Infod("Error committing the transaction")
 			return nil, err
 		}
 		return cf, nil
@@ -205,7 +205,7 @@ func (dt *DT) Exec(sqlstmt string, args ...interface{}) (int64, error) {
 			return 0, err
 		}
 		if err = tx.Commit(); err != nil {
-			log.Infod("Error closing the result set")
+			log.Infod("Error committing the transaction")
 			return 0, err
 		}
 		return numRows, nil
