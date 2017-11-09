@@ -11,4 +11,4 @@ An useful database transactions package which exposes only four functions:
 6) Supports Parameterized queries
 7) All operations delimited with a Begin and an End transaction feature.
 
-#Am currently testing it out
+#Under testing
