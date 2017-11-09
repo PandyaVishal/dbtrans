@@ -145,7 +145,7 @@ func (dt *DT) QueryFetch(sqlstmt string, args ...interface{}) ([]Rows, error) {
 			log.Infod("Error iterating the rows")
 			return nil, err
 		}
-		//close the result set and release to pool
+		//close the result set
 		if err := rs.Close(); err != nil {
 			log.Infod("Error closing the result set")
 			return nil, err
@@ -210,4 +210,23 @@ func (dt *DT) Exec(sqlstmt string, args ...interface{}) (int64, error) {
 		}
 		return numRows, nil
 	}
+}
+
+//Close the connection and release to pool
+func Close(dt *DT) error {
+	mu.RLock()
+	c, ok := dbmap[dt.driver]
+	mu.RUnlock()
+	if ok {
+		err := c.Close()
+		if err != nil {
+			log.Infod("Error closing the connection")
+			return err
+		}
+	} else {
+		err := errors.New("No open connection to close..")
+		log.Infod(err)
+		return err
+	}
+	return nil
 }
